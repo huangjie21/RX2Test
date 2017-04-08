@@ -76,6 +76,14 @@ public class MainActivity extends RxAppCompatActivity {
             @Override
             public void onNext(String o) {
                 System.out.println(o);
+
+                List<CourseModel> courses=GreenDaoManager.getInstance().getSession().getCourseModelDao().loadAll();
+                String str="";
+                for (CourseModel c : courses) {
+//                            System.out.println(c.toString());
+                    str+=c.toString()+"\r\n";
+                }
+                textView.setText(str);
             }
 
             @Override
@@ -131,6 +139,8 @@ public class MainActivity extends RxAppCompatActivity {
                         System.out.println(s);
                     }
                 });
+
+        GreenDaoManager.getInstance().getSession().getCourseModelDao().deleteByKey(1l);
     }
 
     @OnClick(R.id.button3)
@@ -167,15 +177,16 @@ public class MainActivity extends RxAppCompatActivity {
                     public void accept(@NonNull List<CourseModel> courseModels) throws Exception {
                         for (CourseModel c : courseModels) {
                             System.out.println(c.toString());
+                            GreenDaoManager.getInstance().getSession().getCourseModelDao().insertOrReplace(c);
                         }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<CourseModel>>bindUntilEvent(ActivityEvent.PAUSE))
+                .compose(this.<List<CourseModel>>bindToLifecycle())
                 .subscribe(new Observer<List<CourseModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        System.out.println("执行了");
                     }
 
                     @Override
@@ -190,7 +201,7 @@ public class MainActivity extends RxAppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        System.out.println(e.toString());
                     }
 
                     @Override
