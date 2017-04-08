@@ -12,7 +12,7 @@ public class GreenDaoManager {
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
     private static GreenDaoManager mInstance; //单例
-
+//http://blog.csdn.net/huangxiaoguo1/article/details/54574713
     private GreenDaoManager(){
         if (mInstance == null) {
 //            DaoMaster.OpenHelper openHelper = new DaoMaster.OpenHelper(MyApp.getContext(), "rx2.db", null);
