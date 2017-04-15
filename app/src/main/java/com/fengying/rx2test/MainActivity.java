@@ -1,7 +1,11 @@
 package com.fengying.rx2test;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +16,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +41,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.os.Environment.DIRECTORY_DCIM;
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 
 public class MainActivity extends RxAppCompatActivity {
 
@@ -50,6 +58,7 @@ public class MainActivity extends RxAppCompatActivity {
     @BindView(R.id.button4)
     Button button4;
     Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +68,20 @@ public class MainActivity extends RxAppCompatActivity {
         button2.setText("onViewClicked");
         button3.setText("Retrofit");
         button4.setText("Rxjava+Retrofit");
+
+        Log.e("bbbbb1", Environment.getDownloadCacheDirectory().getAbsolutePath());
+        Log.e("bbbbb2", Environment.getExternalStorageDirectory().getAbsolutePath());
+        Log.e("bbbbb3", Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES).getAbsolutePath());
+        Log.e("bbbbb4", Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM).getAbsolutePath());
+        Log.e("aaaaaa",this.getFilesDir().getAbsolutePath());
+        Log.e("xxxxxx",this.getExternalFilesDir(null).getAbsolutePath());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            File[] files = this.getExternalFilesDirs(null);
+            for(File file : files){
+                Log.e("yyyyyy",file.getAbsolutePath());
+            }
+        }
+
 
          retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
